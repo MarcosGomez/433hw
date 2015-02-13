@@ -1,10 +1,4 @@
-#define IS_LINUX
-
-#ifdef IS_LINUX
-	#version 410 core
-#else
-	#version 430 core
-#endif
+#version 410 core
 
 uniform vec4 colour;
 

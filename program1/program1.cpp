@@ -1,7 +1,9 @@
 
+#define IS_LINUX 1 //If 0 then assumes OSX
 
 #include <iostream>
 #include <math.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -284,7 +286,7 @@ void init ( int object )
         break;
 
         default:
-        printf("Wrong type of object to initialize\n");
+	  printf("Wrong type of object to initialize\n");
         break;
     }
 
@@ -365,7 +367,7 @@ void keyboard(unsigned char key, int x, int y)
         // generate geometry for the circle. User provides radius (0-1), and number of steps to make circle
         printf("Enter the radius of the circle in the range [0 - 1]: ");
         scanf("%f", &radius);
-        printf("Enter the number of steps to make the circle: ");
+        printf("Enter the number of steps to make the circle (max is 100): ");
         scanf("%d", &steps);
         if(radius < 0 || radius > 1){
             printf("!Error, radius must be between 0 and 1 inclusive\n");
@@ -416,11 +418,17 @@ int main(int argc, char* argv[])
 {
 
     glutInit( &argc, argv );
-    glutInitDisplayMode( GLUT_3_2_CORE_PROFILE | GLUT_RGBA );
+    #ifdef IS_LINUX
+      glutInitDisplayMode(GLUT_RGBA);
+      glutInitContextVersion( 4, 3 );
+      glutInitContextProfile( GLUT_CORE_PROFILE );// GLUT_COMPATIBILITY_PROFILE );
+    #else
+      //OSX version
+      glutInitDisplayMode( GLUT_3_2_CORE_PROFILE | GLUT_RGBA );
+    #endif
     glutInitWindowSize( 512, 512 );//512
 
-    //glutInitContextVersion( 3, 2 );
-    //glutInitContextProfile( GLUT_CORE_PROFILE );// GLUT_COMPATIBILITY_PROFILE );
+    
     glutCreateWindow( argv[0] );
 
     glewExperimental = GL_TRUE;	// added for glew to work!
