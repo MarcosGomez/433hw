@@ -2,11 +2,6 @@ Marcos Gomez
 2/13/15
 cs433 program 1
 
--Instructions
-run Makefile
-execute program1
-
--Assumptions
 Max steps for the circle is 100
 
 Should work on Linux. Just tested it
