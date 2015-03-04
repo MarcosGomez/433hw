@@ -1,4 +1,8 @@
-#version 430 core
+//OSX
+#version 410 core
+//Linux
+//#version 430 core
+
 
 in vec3 Color;
 out vec4 fColor;

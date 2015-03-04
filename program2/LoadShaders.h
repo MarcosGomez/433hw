@@ -4,12 +4,18 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
+//#define IS_LINUX 1 //If 0 then assumes OSX
+
 #ifndef __LOAD_SHADERS_H__
 #define __LOAD_SHADERS_H__
 
-//#include <GL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
+#ifdef IS_LINUX
+	#include <GL/gl.h>
+	#include <GL/glut.h>
+#else
+	#include <OpenGL/glu.h>
+	#include <GLUT/glut.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {

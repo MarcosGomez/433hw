@@ -4,13 +4,14 @@
 //  program1.cpp  assignment 1 for CSC 433
 //	based on example 1 from the OpenGL Red Book   Chapter 1
 //////////////////////////////////////////////////////////
+//#define IS_LINUX
 
 #include <iostream>
 using namespace std;
 
 #include <math.h>
 #include "vgl.h"
-#include "LoadShaders.h"  
+#include "LoadShaders.h"
 
 const GLuint Triangles = 0, NumVAOs = 3;
 const GLuint ArrayBuffer=0, NumBuffers=4;
@@ -115,7 +116,7 @@ void init (void )
 	// set up the single triangle
 	glGenBuffers( 1, &vboOneTriangleVertices );
 	glBindBuffer( GL_ARRAY_BUFFER, vboOneTriangleVertices );
-	glBufferData( GL_ARRAY_BUFFER, sizeof( singleTriangle ), 
+	glBufferData( GL_ARRAY_BUFFER, sizeof( singleTriangle ),
 		singleTriangle, GL_STATIC_DRAW );
 
 	// set up the vertex array object for the one triangle
@@ -205,7 +206,7 @@ void display (void )
 		glBindVertexArray( vaoCircle );
 		glDrawArrays( GL_TRIANGLE_FAN, 0, steps+1 );
 	}
-	
+
 	glFlush();
 }
 
@@ -296,10 +297,17 @@ void keys ( unsigned char key, int x, int y )
 int main(int argc, char* argv[])
 {
 	glutInit( &argc, argv );
-	glutInitDisplayMode( GLUT_RGBA );
-	glutInitWindowSize( 512, 512 );
+
+
+	#ifdef IS_LINUX
+	glutInitDisplayMode(GLUT_RGBA);
 	glutInitContextVersion( 4, 3 );
 	glutInitContextProfile( GLUT_CORE_PROFILE );// GLUT_COMPATIBILITY_PROFILE );
+	#else
+	//OSX version
+	glutInitDisplayMode( GLUT_3_2_CORE_PROFILE | GLUT_RGBA );
+	#endif
+	glutInitWindowSize( 512, 512 );
 	glutCreateWindow( argv[0] );
 
 	glewExperimental = GL_TRUE;	// added for glew to work!
@@ -332,4 +340,3 @@ checkGLError( "versions" );
 
 	return 0;
 }
-

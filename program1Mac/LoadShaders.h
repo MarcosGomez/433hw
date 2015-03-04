@@ -4,16 +4,19 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
+
 #ifndef __LOAD_SHADERS_H__
 #define __LOAD_SHADERS_H__
+
 
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif  // __cplusplus
-    
+
     //----------------------------------------------------------------------------
     //
     //  LoadShaders() takes an array of ShaderFile structures, each of which
@@ -27,17 +30,17 @@ extern "C" {
     //  LoadShaders() returns the shader program value (as returned by
     //    glCreateProgram()) on success, or zero on failure.
     //
-    
+
     typedef struct {
         GLenum       type;
         const char*  filename;
         GLuint       shader;
     } ShaderInfo;
-    
+
     GLuint LoadShaders( ShaderInfo* );
-    
+
     //----------------------------------------------------------------------------
-    
+
 #ifdef __cplusplus
 };
 #endif // __cplusplus
