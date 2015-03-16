@@ -1,0 +1,51 @@
+Marcos Gomez
+3/15/15
+
+Written Answers for Homework 2
+
+5. [3 points] Compute the viewing matrix for the following settings:
+i. Eye = 5,0,0
+ii. Focal point = 0,0,0
+iii. View up = 0,0,1
+
+Let F = [0 - 5, 0 - 0, 0 - 0] = [-5, 0, 0]
+
+The unit vector of F is [-1, 0, 0]
+
+The unit vector of the view up vector is [0, 0, 1]
+
+The cross product s =  F X view up =  i j k = [0, 1, 0] = s
+                                     -1 0 0
+                                      0 0 1
+
+Let u = s X F = i j k = [0, 0, 1] = u
+                0 1 0
+               -1 0 0
+
+M = [0, 1, 0, 0]
+    [0, 0, 1, 0]
+    [1, 0, 0, 0]
+    [0, 0, 0, 1]
+
+    now glMultMatrixf(M); glTranslated( -eye, -eyeY, -eyeZ);
+
+
+= [0, 0, 1, 0]
+  [1, 0, 0, 0]
+  [0, 1, 0, 0]
+  [0, 0,-5, 1]
+
+
+6. [4 points] For the world coordinate 1,0,0, what is its value in eye
+  coordinates using the viewing matrix in problem 3?
+
+  it would be viewingMatrix * [1]
+                              [0]
+                              [0]
+                              [1]
+
+  which equals
+
+
+7. [3 points] Compute the face normal for a triangle described by these
+vertices (1,0,0), (0,1,0) and (0,0,1). Assume CCW ordering of these coordinates.

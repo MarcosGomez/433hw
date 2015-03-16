@@ -5,6 +5,7 @@
 
 
 in vec3 Color;
+
 out vec4 fColor;
 
 void
