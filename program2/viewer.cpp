@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////
 //  assignment 2 for CSC 433
 //////////////////////////////////////////////////////////
-//#define IS_LINUX
+#define IS_LINUX
 
 #include <iostream>
 #include <stdio.h>
@@ -194,10 +194,6 @@ void init (void )
 		  glm::normalize(normal);
 
 		  // Store the face's normal for each of the vertices that make up the face.
-
-		  // normal_buffer[i+0].push_back( normal );
-		  // normal_buffer[i+1].push_back( normal );
-		  // normal_buffer[i+2].push_back( normal );
 
 
 			vertexNormals[i+0][0] = normal.x;
@@ -769,12 +765,6 @@ void readControl(char * controlFile){
 ////////////////////////////////////////////////////////////////////////
 int main(int argc, char* argv[])
 {
-
-	glm::mat4 viewMat = glm::lookAt(glm::vec3(5.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f));
-	cout << viewMat[0][0] << viewMat[0][1] << viewMat[0][2] << viewMat[0][3] << endl;
-	cout << viewMat[1][0] << viewMat[1][1] << viewMat[1][2] << viewMat[1][3] << endl;
-	cout << viewMat[2][0] << viewMat[2][1] << viewMat[2][2] << viewMat[2][3] << endl;
-	cout << viewMat[3][0] << viewMat[3][1] << viewMat[3][2] << viewMat[3][3] << endl;
 
 	if(argc < 3){
 		cout << "Usage: " << argv[0] << " -c controlFile" << endl;

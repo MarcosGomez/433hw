@@ -1,7 +1,7 @@
 //OSX
-#version 410 core
+//#version 410 core
 //Linux
-//#version 430 core
+#version 430 core
 
 uniform mat4 model;
 uniform mat4 view;

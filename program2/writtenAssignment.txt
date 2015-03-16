@@ -8,32 +8,31 @@ i. Eye = 5,0,0
 ii. Focal point = 0,0,0
 iii. View up = 0,0,1
 
-Let F = [0 - 5, 0 - 0, 0 - 0] = [-5, 0, 0]
 
-The unit vector of F is [-1, 0, 0]
-
-The unit vector of the view up vector is [0, 0, 1]
-
-The cross product s =  F X view up =  i j k = [0, 1, 0] = s
-                                     -1 0 0
-                                      0 0 1
-
-Let u = s X F = i j k = [0, 0, 1] = u
-                0 1 0
-               -1 0 0
-
-M = [0, 1, 0, 0]
-    [0, 0, 1, 0]
-    [1, 0, 0, 0]
-    [0, 0, 0, 1]
-
-    now glMultMatrixf(M); glTranslated( -eye, -eyeY, -eyeZ);
+For zaxis, The gaze vector is normal( Focal point - Eye )
+which equals normal( 0 - 5, 0 - 0, 0 - 0) = normal( -5, 0, 0 )
+= (1, 0, 0)
 
 
-= [0, 0, 1, 0]
-  [1, 0, 0, 0]
-  [0, 1, 0, 0]
-  [0, 0,-5, 1]
+For xaxis, the vector equals normal( viewUp X zaxis )  0 0 1
+                                                      -1 0 0
+which equals normal(0 - 0, -(0 + 1), 0 ) = normal( 0, -1, 0 )
+= (0, 1, 0)
+
+
+For yaxis, the vector equals zaxis X xaxis = -1 0 0
+                                              0-1 0
+which equals (0 - 0, 0 - 0, 1 - 0)
+= (0, 0, 1)
+
+
+So final matrix equals [ 0, 0, 1, 0]
+                       [ 1, 0, 0, 0]
+                       [ 0, 1, 0, 0]
+                       [ 0, 0,-5, 1]
+
+
+
 
 
 6. [4 points] For the world coordinate 1,0,0, what is its value in eye
@@ -44,8 +43,19 @@ M = [0, 1, 0, 0]
                               [0]
                               [1]
 
-  which equals
+  which equals (0, 1, 0, 1)
+  So it would now be at (0, 1, 0) coordinate
 
 
 7. [3 points] Compute the face normal for a triangle described by these
 vertices (1,0,0), (0,1,0) and (0,0,1). Assume CCW ordering of these coordinates.
+
+The 2 vectors would [0 - 1, 1 - 0, 0 - 0] = [-1, 1, 0]
+
+                and [0 - 1, 0 - 0, 1 - 0] = [-1, 0, 1]
+
+The cross product of these vectors is equal to the normal
+
+[-1, 1, 0] X [-1, 0, 1] = [1 - 0, -(-1 - 0), 0 + 1] = [1, 1, 1]
+
+So (1, 1, 1) is the face normal, which as a unit vector equals (1/sqrt(3), 1/sqrt(3), 1/sqrt(3))
