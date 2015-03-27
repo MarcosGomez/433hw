@@ -7,7 +7,7 @@ run Makefile
 execute viewer
 
 -Assumptions
-Max vertices in a shape can have is 1000
+Max vertices in a shape can have is 300,000
 Assumes mtl files are in a folder called "objFiles" with obj files
 
 -Limits

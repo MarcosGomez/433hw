@@ -1,13 +1,13 @@
 //OSX
-//#version 410 core
+#version 410 core
 //Linux
-#version 430 core
+//#version 430 core
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 proj;
 
-vec3 light = normalize(vec3(1.0, .5, 1.0));
+uniform vec3 light;
 
 layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec3 vertexNormal;
@@ -23,6 +23,7 @@ main()
 
     mat3 transform = mat3(model);
     vec3 transNormal = normalize(transform * vertexNormal);
+    //light = normalize(light);
 
 
     Color = Ka + min( 1.0, max( 0.0, dot(transNormal, light) ) ) * Kd;
