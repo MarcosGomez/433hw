@@ -1,3 +1,4 @@
+// Marcos Gomez
 // viewer.cpp
 //
 //////////////////////////////////////////////////////////
@@ -205,118 +206,6 @@ void setDefault(){
 void init (void )
 {
 
-	GLfloat temp[MaxVertices][vecLength] = {
-		//red
-		{0., 0., 0.},
-		{1., 0., 0.},
-		{1., .1, 0.},
-
-		{0., 0., 0.},
-		{1., .1, 0.},
-		{0., .1, 0.},
-
-		//green
-		{0., 0., 0.},
-		{0., 1., 0.},
-		{.1, 1., 0.},
-
-		{0., 0., 0.},
-		{.1, 1., 0.},
-		{.1, 0., 0.},
-
-		//blue
-		{0., 0., 0.},
-		{0., 0., 1.},
-		{.1, 0., 1.},
-
-		{0., 0., 0.},
-		{.1, 0., 1.},
-		{.1, 0., 0.}
-
-	};
-
-	// GLfloat tempKd[MaxVertices][vecLength] = {
-	// 	//red
-	// 	{1., 0., 0.},
-	// 	{1., 0., 0.},
-	// 	{1., 0., 0.},
-
-	// 	{1., 0., 0.},
-	// 	{1., 0., 0.},
-	// 	{1., 0., 0.},
-
-	// 	//green
-	// 	{0., 1., 0.},
-	// 	{0., 1., 0.},
-	// 	{0., 1., 0.},
-
-	// 	{0., 1., 0.},
-	// 	{0., 1., 0.},
-	// 	{0., 1., 0.},
-
-	// 	//blue
-	// 	{0., 0., 1.},
-	// 	{0., 0., 1.},
-	// 	{0., 0., 1.},
-
-	// 	{0., 0., 1.},
-	// 	{0., 0., 1.},
-	// 	{0., 0., 1.},
-
-	// };
-
-	//vertices = temp;
-	// for(int k = 0; k < NumVertices; k++){
-	// 	vertices[k][0] = temp[k][0];
-	// 	vertices[k][1] = temp[k][1];
-	// 	vertices[k][2] = temp[k][2];
-	// }
-
-	//memcpy(vertices, temp, sizeof(GLuint) * NumVertices * vecLength);
-	//memcpy(vertexKd, tempKd, sizeof(GLuint) * NumVertices * vecLength);
-
-
-	//Calculate normals
-	// if(vertexNormals[0][0] == 0.0 && vertexNormals[0][1] == 0.0 && vertexNormals[0][2] == 0.0){
-	// 	cout << "Calculating Normals" << endl;
-	// 	//std::vector<glm::vec3>* normal_buffer = new std::vector<glm::vec3>[NumVertices];
-	// 	//unsigned int num_indices = NumVertices/3.0;
-
-	// 	//Calc for each face
-	// 	for( int i = 0; i < NumVertices - 2; i += 3 )
-	// 	{
-	// 	  // get the three vertices that make the faces
-	// 		glm::vec3 p1(vertices[i+0][0],vertices[i+0][1],vertices[i+0][2]);
-	// 		glm::vec3 p2(vertices[i+1][0],vertices[i+1][1],vertices[i+1][2]);
-	// 		glm::vec3 p3(vertices[i+2][0],vertices[i+2][1],vertices[i+2][2]);
-
-	// 		// Calculate the 2 vectors
-	// 		glm::vec3 v1 = p2 - p1;
-	// 		glm::vec3 v2 = p3 - p1;
-	// 		//Cross to get normal
-	// 		glm::vec3 normal = glm::cross(v1, v2);
-
-	// 	  glm::normalize(normal);
-
-	// 	  // Store the face's normal for each of the vertices that make up the face.
-
-
-	// 		vertexNormals[i+0][0] = normal.x;
-	// 		vertexNormals[i+0][1] = normal.y;
-	// 		vertexNormals[i+0][2] = normal.z;
-
-	// 		vertexNormals[i+1][0] = normal.x;
-	// 		vertexNormals[i+1][1] = normal.y;
-	// 		vertexNormals[i+1][2] = normal.z;
-
-	// 		vertexNormals[i+2][0] = normal.x;
-	// 		vertexNormals[i+2][1] = normal.y;
-	// 		vertexNormals[i+2][2] = normal.z;
-
-	// 	}
-	// }
-
-
 	// set up the vertex array object for the two triangles
 	glGenVertexArrays( 1, &vaoObject );
 	glBindVertexArray( vaoObject );
@@ -477,17 +366,19 @@ void keys ( unsigned char key, int x, int y )
 			break;
 		case 'd':		// move focal point down along view up vector(tilt down)
 
-			focalPoint -= viewUp;
-			focalPoint -= viewUp;
-			focalPoint -= viewUp;
+			// focalPoint -= viewUp;
+			// focalPoint -= viewUp;
+			// focalPoint -= viewUp;
+			focalPoint.z -= std::fabs(glm::length(cameraPosition - defaultFP))/30.0;
 			recalcView();
 
 			break;
 		case 'f':		// move focal point up along view up vector(tilt up)
 
-			focalPoint += viewUp;
-			focalPoint += viewUp;
-			focalPoint += viewUp;
+			// focalPoint += viewUp;
+			// focalPoint += viewUp;
+			// focalPoint += viewUp;
+			focalPoint.z += std::fabs(glm::length(cameraPosition - defaultFP))/30.0;
 			recalcView();
 
 			break;
@@ -529,8 +420,11 @@ void specialKeys(int key, int x, int y)
 
 			// fov -= M_PI / 180.0; //Decrease fov by 1 degree
 			// recalcProj();
-			float divide = 40.0;
-			glm::vec3 gaze((defaultFP.x - cameraPosition.x)/divide, (defaultFP.y - cameraPosition.y)/divide, (defaultFP.z - cameraPosition.z)/divide);
+			float distance;
+			distance = std::fabs(glm::length(cameraPosition - defaultFP));
+			glm::vec3 gaze((focalPoint.x - cameraPosition.x), (focalPoint.y - cameraPosition.y), (focalPoint.z - cameraPosition.z));
+			gaze = glm::normalize(gaze);
+			gaze *= distance/30.0f;
 			cameraPosition += gaze;
 			focalPoint += gaze;
 			recalcView();
@@ -538,11 +432,12 @@ void specialKeys(int key, int x, int y)
 			break;
 		case GLUT_KEY_DOWN :{		// move backward along gaze vector. scale distance based on bounds
 
-			// fov += M_PI / 180.0; //Increase fov by 1 degree
-			// recalcProj();
-			float divide = 40.0;
-			glm::vec3 gaze((defaultFP.x - cameraPosition.x)/divide, (defaultFP.y - cameraPosition.y)/divide, (defaultFP.z - cameraPosition.z)/divide);
-			//glm::vec3 gaze(focalPoint.x - cameraPosition.x, focalPoint.y - cameraPosition.y, focalPoint.z - cameraPosition.z);
+			
+			float distance;
+			distance = std::fabs(glm::length(cameraPosition - defaultFP));
+			glm::vec3 gaze((focalPoint.x - cameraPosition.x), (focalPoint.y - cameraPosition.y), (focalPoint.z - cameraPosition.z));
+			gaze = glm::normalize(gaze);
+			gaze *= distance/30.0f;
 			cameraPosition -= gaze;
 			focalPoint -= gaze;
 			recalcView();
@@ -683,23 +578,6 @@ void readObj(const char * fileName){
 			tempVertices[vIndex][1] = vertex.y;
 			tempVertices[vIndex][2] = vertex.z;
 
-			// if(xPlus == xMinus && xMinus == yPlus && yPlus == yMinus &&
-			// 	yMinus == zPlus && zPlus == zMinus){
-			// 	xPlus = tempVec.x;
-			// 	xMinus = tempVec.x;
-			// 	yPlus = tempVec.y;
-			// 	yMinus = tempVec.y;
-			// 	zPlus = tempVec.z;
-			// 	zMinus = tempVec.z;
-			// }
-			
-			// xPlus = std::max(tempVec.x, xPlus);
-			// xMinus = std::min(tempVec.x, xMinus);
-			// yPlus = std::max(tempVec.y, yPlus);
-			// yMinus = std::min(tempVec.y, yMinus);
-			// zPlus = std::max(tempVec.z, zPlus);
-			// zMinus = std::min(tempVec.z, zMinus);
-
 			
 
 			vIndex ++;
@@ -795,7 +673,6 @@ void readObj(const char * fileName){
 					fscanf( inputFile, "%d %d\n", &vertexIndex[1], &vertexIndex[2]);
 				}
 			}
-
 			//cout << vertexIndex[0] << " : " << vertexIndex[1] << " : " << vertexIndex[2] << endl;
 			
 			//Set the vertices in the xPlus location, face
@@ -861,37 +738,38 @@ void readObj(const char * fileName){
 			zPlus = std::max(tempVec.z, zPlus);
 			zMinus = std::min(tempVec.z, zMinus);
 
-			
-
-			// vertices[vertexCount + 0][0] = tempVertices[vertexIndex[0] - 1][0];
-			// vertices[vertexCount + 0][1] = tempVertices[vertexIndex[0] - 1][1];
-			// vertices[vertexCount + 0][2] = tempVertices[vertexIndex[0] - 1][2];
-
-			// vertices[vertexCount + 1][0] = tempVertices[vertexIndex[1] - 1][0];
-			// vertices[vertexCount + 1][1] = tempVertices[vertexIndex[1] - 1][1];
-			// vertices[vertexCount + 1][2] = tempVertices[vertexIndex[1] - 1][2];
-
-			// vertices[vertexCount + 2][0] = tempVertices[vertexIndex[2] - 1][0];
-			// vertices[vertexCount + 2][1] = tempVertices[vertexIndex[2] - 1][1];
-			// vertices[vertexCount + 2][2] = tempVertices[vertexIndex[2] - 1][2];
 
 			if(foundVN){
 				//cout << "Setting normals for face" << endl;
 				//Set normals
-				vertexNormals[vertexCount + 0][0] = tempVertexNormals[normalIndex[0] - 1][0];
-				vertexNormals[vertexCount + 0][1] = tempVertexNormals[normalIndex[0] - 1][1];
-				vertexNormals[vertexCount + 0][2] = tempVertexNormals[normalIndex[0] - 1][2];
+				//1
+				tempVec = transformMat * glm::vec4(tempVertexNormals[normalIndex[0] - 1][0], tempVertexNormals[normalIndex[0] - 1][1],
+				tempVertexNormals[normalIndex[0] - 1][2] , 1.0f);
 
-				vertexNormals[vertexCount + 1][0] = tempVertexNormals[normalIndex[1] - 1][0];
-				vertexNormals[vertexCount + 1][1] = tempVertexNormals[normalIndex[1] - 1][1];
-				vertexNormals[vertexCount + 1][2] = tempVertexNormals[normalIndex[1] - 1][2];
+				vertexNormals[vertexCount + 0][0] = tempVec.x;
+				vertexNormals[vertexCount + 0][1] = tempVec.y;
+				vertexNormals[vertexCount + 0][2] = tempVec.z;
 
-				vertexNormals[vertexCount + 2][0] = tempVertexNormals[normalIndex[2] - 1][0];
-				vertexNormals[vertexCount + 2][1] = tempVertexNormals[normalIndex[2] - 1][1];
-				vertexNormals[vertexCount + 2][2] = tempVertexNormals[normalIndex[2] - 1][2];
+				//2
+				tempVec = transformMat * glm::vec4(tempVertexNormals[normalIndex[1] - 1][0], tempVertexNormals[normalIndex[1] - 1][1],
+				tempVertexNormals[normalIndex[1] - 1][2] , 1.0f);
+
+				vertexNormals[vertexCount + 1][0] = tempVec.x;
+				vertexNormals[vertexCount + 1][1] = tempVec.y;
+				vertexNormals[vertexCount + 1][2] = tempVec.z;
+
+
+				//3
+				tempVec = transformMat * glm::vec4(tempVertexNormals[normalIndex[2] - 1][0], tempVertexNormals[normalIndex[2] - 1][1],
+				tempVertexNormals[normalIndex[2] - 1][2] , 1.0f);
+
+				vertexNormals[vertexCount + 2][0] = tempVec.x;
+				vertexNormals[vertexCount + 2][1] = tempVec.y;
+				vertexNormals[vertexCount + 2][2] = tempVec.z;
+
 			}else{
 				//Calculate normals
-				cout << "Calculating normals" << endl;
+				//cout << "Calculating normals" << endl;
 				// get the three vertices that make the faces
 				glm::vec3 p1(vertices[vertexCount+0][0],vertices[vertexCount+0][1],vertices[vertexCount+0][2]);
 				glm::vec3 p2(vertices[vertexCount+1][0],vertices[vertexCount+1][1],vertices[vertexCount+1][2]);
@@ -927,7 +805,7 @@ void readObj(const char * fileName){
 			//Find Ka and Kd values of these faces
 			mtlFile = fopen(mtlLibrary, "r");
 			if(mtlFile == NULL){
-				cerr << "Couldn't open material file for reading. Using default colors" << endl;
+				//cout << "Couldn't open material file for reading. Using default colors" << endl;
 			}else if(strcmp(material, "empty") == 0){
 				cout << "No material specified, using default" << endl;
 			}else{
@@ -1015,11 +893,8 @@ void readObj(const char * fileName){
 
 		}
 
-		//cout << "NumVertices = " << vertexCount << endl;
-
 	}
 	
-
 	fclose(inputFile);
 	
 	NumVertices = vertexCount;
@@ -1060,11 +935,14 @@ void readControl(char * controlFile){
 		}else if(strcmp( lineHeader, "t" ) == 0){//translate
 			glm::vec3 trans;
 			fscanf(inputFile, "%f %f %f\n", &trans.x, &trans.y, &trans.z);
+
+
 			transformMat = glm::translate(transformMat, trans);
 
 		}else if(strcmp( lineHeader, "s" ) == 0){//Scale
 			glm::vec3 scail;
 			fscanf(inputFile, "%f %f %f\n", &scail.x, &scail.y, &scail.z);
+
 			transformMat = glm::scale(transformMat, scail);
 
 		}else if(strcmp( lineHeader, "rx" ) == 0){//Rotate

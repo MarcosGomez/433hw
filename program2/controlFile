@@ -1,3 +1,15 @@
-obj objFiles/humanoid_tri.obj
+
 obj objFiles/axis.obj
+s 10 10 10
+
+obj objFiles/teapot.obj
+s .1 .1 .1
+rx 90
+ry 180
+rz 0
+
+obj objFiles/rabbit.obj
 s 20 20 20
+rx 90
+ry 180
+t 0 .5 0

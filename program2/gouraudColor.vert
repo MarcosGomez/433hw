@@ -23,7 +23,6 @@ main()
 
     mat3 transform = mat3(model);
     vec3 transNormal = normalize(transform * vertexNormal);
-    //light = normalize(light);
 
 
     Color = Ka + min( 1.0, max( 0.0, dot(transNormal, light) ) ) * Kd;
