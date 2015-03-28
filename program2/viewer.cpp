@@ -7,7 +7,6 @@
 //#define IS_LINUX
 
 //Uncomment this, define in Makefile, and change all shader .vert, .frag files
-//#include "IS_LINUX.h"
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
