@@ -1,2 +1,3 @@
+obj objFiles/humanoid_tri.obj
 obj objFiles/axis.obj
-obj objFiles/diamond.obj
+s 20 20 20

@@ -1,5 +1,5 @@
 Marcos Gomez
-3/15/15
+3/27/15
 cs433 program 2
 
 -Instructions
@@ -7,12 +7,10 @@ run Makefile
 execute viewer
 
 -Assumptions
-Max vertices in a shape can have is 300,000
-Assumes mtl files are in a folder called "objFiles" with obj files
+Max faces in an object can have is 10,000
+Assumes mtl files and obj files are at same location
 
 -Limits
-It can only draw one shape, not multiple from a control file
-It doesn't connect vertices correctly
+ s, t, rin the control file does it to all objects, not individual ones
 
 
-Didn't have a chance to run it on Linux, but it runs on my Mac

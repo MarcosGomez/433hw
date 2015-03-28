@@ -5,6 +5,8 @@
 //////////////////////////////////////////////////////////
 //#define IS_LINUX
 
+//Uncomment this, define in Makefile, and change all shader .vert, .frag files
+//#include "IS_LINUX.h"
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,7 +22,7 @@ using namespace std;
 #include "glm/glm/gtc/matrix_transform.hpp"
 #include "glm/glm/gtc/type_ptr.hpp"
 
-#define MaxVertices 10000
+#define MaxVertices 30000  //10000
 
 const GLuint Triangles = 0, NumVAOs = 3;
 const GLuint ArrayBuffer=0, NumBuffers=4;
@@ -54,7 +56,6 @@ bool wireframeRendering = false;
 GLfloat radius;
 GLint steps;
 
-GLfloat red = 0.f, green = 1.f, blue = 1.f;	// colors for two triangles and circle
 
 GLuint singleColorProgram;		// shader program for single color
 GLuint gouraudColorProgram;		// shader program for Gouraud shading
@@ -98,11 +99,7 @@ GLfloat vertexKd[MaxVertices][vecLength];
 GLfloat vertexNormals[MaxVertices][vecLength];
 
 //Made global to support multiple objects
-int objCount = 0;
-
-int vIndex = 0;
-int vtIndex = 0;
-int vnIndex = 0;
+glm::mat4 transformMat = glm::mat4();
 int vertexCount = 0;
 
 
@@ -195,7 +192,7 @@ void setDefault(){
 	fov = glm::radians(70.0f);
 	aspectRatio = 512.0f/512.0f;
 	nearPlane = 1.0f;
-	farPlane = 5000.0f;
+	farPlane = 1000.0f; //defaultCP.z
 
 	model = glm::mat4();
 
@@ -208,23 +205,6 @@ void setDefault(){
 void init (void )
 {
 
-	//NumVertices = 18;
-	// orig[][]={
-	// 	0. 0. 0.
-	// 	1. 0. 0.
-	// 	1. .1 0.
-	// 	0. .1 0.
-
-	// 	0. 0. 0.
-	// 	0. 1. 0.
-	// 	.1 1. 0.
-	// 	.1 0. 0.
-
-	// 	0. 0. 0.
-	// 	0. 0. 1.
-	// 	.1 0. 1.
-	// 	.1 0. 0.
-	// }
 	GLfloat temp[MaxVertices][vecLength] = {
 		//red
 		{0., 0., 0.},
@@ -297,44 +277,44 @@ void init (void )
 
 
 	//Calculate normals
-	if(vertexNormals[0][0] == 0.0 && vertexNormals[0][1] == 0.0 && vertexNormals[0][2] == 0.0){
-		cout << "Calculating Normals" << endl;
-		//std::vector<glm::vec3>* normal_buffer = new std::vector<glm::vec3>[NumVertices];
-		//unsigned int num_indices = NumVertices/3.0;
+	// if(vertexNormals[0][0] == 0.0 && vertexNormals[0][1] == 0.0 && vertexNormals[0][2] == 0.0){
+	// 	cout << "Calculating Normals" << endl;
+	// 	//std::vector<glm::vec3>* normal_buffer = new std::vector<glm::vec3>[NumVertices];
+	// 	//unsigned int num_indices = NumVertices/3.0;
 
-		//Calc for each face
-		for( int i = 0; i < NumVertices - 2; i += 3 )
-		{
-		  // get the three vertices that make the faces
-			glm::vec3 p1(vertices[i+0][0],vertices[i+0][1],vertices[i+0][2]);
-			glm::vec3 p2(vertices[i+1][0],vertices[i+1][1],vertices[i+1][2]);
-			glm::vec3 p3(vertices[i+2][0],vertices[i+2][1],vertices[i+2][2]);
+	// 	//Calc for each face
+	// 	for( int i = 0; i < NumVertices - 2; i += 3 )
+	// 	{
+	// 	  // get the three vertices that make the faces
+	// 		glm::vec3 p1(vertices[i+0][0],vertices[i+0][1],vertices[i+0][2]);
+	// 		glm::vec3 p2(vertices[i+1][0],vertices[i+1][1],vertices[i+1][2]);
+	// 		glm::vec3 p3(vertices[i+2][0],vertices[i+2][1],vertices[i+2][2]);
 
-			// Calculate the 2 vectors
-			glm::vec3 v1 = p2 - p1;
-			glm::vec3 v2 = p3 - p1;
-			//Cross to get normal
-			glm::vec3 normal = glm::cross(v1, v2);
+	// 		// Calculate the 2 vectors
+	// 		glm::vec3 v1 = p2 - p1;
+	// 		glm::vec3 v2 = p3 - p1;
+	// 		//Cross to get normal
+	// 		glm::vec3 normal = glm::cross(v1, v2);
 
-		  glm::normalize(normal);
+	// 	  glm::normalize(normal);
 
-		  // Store the face's normal for each of the vertices that make up the face.
+	// 	  // Store the face's normal for each of the vertices that make up the face.
 
 
-			vertexNormals[i+0][0] = normal.x;
-			vertexNormals[i+0][1] = normal.y;
-			vertexNormals[i+0][2] = normal.z;
+	// 		vertexNormals[i+0][0] = normal.x;
+	// 		vertexNormals[i+0][1] = normal.y;
+	// 		vertexNormals[i+0][2] = normal.z;
 
-			vertexNormals[i+1][0] = normal.x;
-			vertexNormals[i+1][1] = normal.y;
-			vertexNormals[i+1][2] = normal.z;
+	// 		vertexNormals[i+1][0] = normal.x;
+	// 		vertexNormals[i+1][1] = normal.y;
+	// 		vertexNormals[i+1][2] = normal.z;
 
-			vertexNormals[i+2][0] = normal.x;
-			vertexNormals[i+2][1] = normal.y;
-			vertexNormals[i+2][2] = normal.z;
+	// 		vertexNormals[i+2][0] = normal.x;
+	// 		vertexNormals[i+2][1] = normal.y;
+	// 		vertexNormals[i+2][2] = normal.z;
 
-		}
-	}
+	// 	}
+	// }
 
 
 	// set up the vertex array object for the two triangles
@@ -424,7 +404,7 @@ void init (void )
 
 	setLight();
 
-	glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
+	glClearColor(0.0f, 0.15f, 0.15f, 1.0f);
 
 }
 
@@ -437,12 +417,11 @@ void display (void )
 {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
+	glUseProgram( gouraudColorProgram );
+	glBindVertexArray( vaoObject );	// two triangles
 
-
-		glUseProgram( gouraudColorProgram );
-		glBindVertexArray( vaoObject );	// two triangles
-
-		glDrawArrays( GL_TRIANGLES, 0, NumVertices );
+	//cout << "About to draw " << NumVertices << " vertices" << endl;
+	glDrawArrays( GL_TRIANGLES, 0, NumVertices);//30
 
 
 	glFlush();
@@ -550,8 +529,8 @@ void specialKeys(int key, int x, int y)
 
 			// fov -= M_PI / 180.0; //Decrease fov by 1 degree
 			// recalcProj();
-			float divide = 60.0;
-			glm::vec3 gaze((focalPoint.x - cameraPosition.x)/divide, (focalPoint.y - cameraPosition.y)/divide, (focalPoint.z - cameraPosition.z)/divide);
+			float divide = 40.0;
+			glm::vec3 gaze((defaultFP.x - cameraPosition.x)/divide, (defaultFP.y - cameraPosition.y)/divide, (defaultFP.z - cameraPosition.z)/divide);
 			cameraPosition += gaze;
 			focalPoint += gaze;
 			recalcView();
@@ -561,8 +540,8 @@ void specialKeys(int key, int x, int y)
 
 			// fov += M_PI / 180.0; //Increase fov by 1 degree
 			// recalcProj();
-			float divide = 60.0;
-			glm::vec3 gaze((focalPoint.x - cameraPosition.x)/divide, (focalPoint.y - cameraPosition.y)/divide, (focalPoint.z - cameraPosition.z)/divide);
+			float divide = 40.0;
+			glm::vec3 gaze((defaultFP.x - cameraPosition.x)/divide, (defaultFP.y - cameraPosition.y)/divide, (defaultFP.z - cameraPosition.z)/divide);
 			//glm::vec3 gaze(focalPoint.x - cameraPosition.x, focalPoint.y - cameraPosition.y, focalPoint.z - cameraPosition.z);
 			cameraPosition -= gaze;
 			focalPoint -= gaze;
@@ -650,28 +629,39 @@ void windowResize(int width, int height)
 void readObj(const char * fileName){
 
 
-	FILE * inputFile;
-	FILE * mtlFile;
-	char mtlLibrary[128];
+	FILE * inputFile = NULL;
+	FILE * mtlFile = NULL;
+	char mtlLibrary[128] = "";
 	char material[128] = "empty";
-	char lineHeader[128];
+	char lineHeader[128] = "";
 	
 	bool foundVT = false;
 	bool foundVN = false;
 
 	bool sameAsVertex = true;
-	unsigned int vertexIndex[3], uvIndex[3], normalIndex[3] = {1, 1, 1};
+	unsigned int vertexIndex[3] = {1, 1, 1}, uvIndex[3] = {1, 1, 1}, normalIndex[3] = {1, 1, 1};
+
+	int vIndex = 0;
+	int vtIndex = 0;
+	int vnIndex = 0;
+	
 
 	
 	//vertices
 	GLfloat tempVertices[MaxVertices][vecLength];
 	GLfloat tempVertexNormals[MaxVertices][vecLength];
+	for(int i = 0; i < MaxVertices; i++){
+		for(int j = 0; j < vecLength; j++){
+			tempVertices[i][j] = 0.0f;
+			tempVertexNormals[i][j] = 0.0f;
+		}
+	}
 
 
 	cout << fileName << endl;
 	inputFile = fopen(fileName, "r");
 	if(inputFile == NULL){
-		cerr << "Failed to open obj file for reading" << endl;
+		cerr << "Failed to open obj file: \"" << fileName << "\" for reading" << endl;
 		exit(1);
 	}
 
@@ -693,22 +683,24 @@ void readObj(const char * fileName){
 			tempVertices[vIndex][1] = vertex.y;
 			tempVertices[vIndex][2] = vertex.z;
 
-			if(xPlus == xMinus && xMinus == yPlus && yPlus == yMinus &&
-				yMinus == zPlus && zPlus == zMinus){
-				xPlus = vertex.x;
-				xMinus = vertex.x;
-				yPlus = vertex.y;
-				yMinus = vertex.y;
-				zPlus = vertex.z;
-				zMinus = vertex.z;
-			}
+			// if(xPlus == xMinus && xMinus == yPlus && yPlus == yMinus &&
+			// 	yMinus == zPlus && zPlus == zMinus){
+			// 	xPlus = tempVec.x;
+			// 	xMinus = tempVec.x;
+			// 	yPlus = tempVec.y;
+			// 	yMinus = tempVec.y;
+			// 	zPlus = tempVec.z;
+			// 	zMinus = tempVec.z;
+			// }
 			
-			xPlus = std::max(vertex.x, xPlus);
-			xMinus = std::min(vertex.x, xMinus);
-			yPlus = std::max(vertex.y, yPlus);
-			yMinus = std::min(vertex.y, yMinus);
-			zPlus = std::max(vertex.z, zPlus);
-			zMinus = std::max(vertex.z, zMinus);
+			// xPlus = std::max(tempVec.x, xPlus);
+			// xMinus = std::min(tempVec.x, xMinus);
+			// yPlus = std::max(tempVec.y, yPlus);
+			// yMinus = std::min(tempVec.y, yMinus);
+			// zPlus = std::max(tempVec.z, zPlus);
+			// zMinus = std::min(tempVec.z, zMinus);
+
+			
 
 			vIndex ++;
 		}else if( strcmp( lineHeader, "vt" ) == 0){
@@ -734,7 +726,7 @@ void readObj(const char * fileName){
 			vnIndex++;
 
 		}else if( strcmp( lineHeader, "s" ) == 0){//smoothing group
-			unsigned int normalPos;
+			unsigned int normalPos = 0;
 			fscanf(inputFile, "%d\n", &normalPos );
 			normalIndex[0] = normalPos;
 			normalIndex[1] = normalPos;
@@ -742,8 +734,6 @@ void readObj(const char * fileName){
 			sameAsVertex = false;
 
 		}else if( strcmp( lineHeader, "f" ) == 0 ){
-			//TODO
-
 			
 			//Temperarily store info
 			
@@ -806,23 +796,87 @@ void readObj(const char * fileName){
 				}
 			}
 
-			cout << vertexIndex[0] << " : " << vertexIndex[1] << " : " << vertexIndex[2] << endl;
+			//cout << vertexIndex[0] << " : " << vertexIndex[1] << " : " << vertexIndex[2] << endl;
+			
 			//Set the vertices in the xPlus location, face
-			cout << "Setting vertices for face starting at index " << vertexCount << endl;
-			vertices[vertexCount + 0][0] = tempVertices[vertexIndex[0] - 1][0];
-			vertices[vertexCount + 0][1] = tempVertices[vertexIndex[0] - 1][1];
-			vertices[vertexCount + 0][2] = tempVertices[vertexIndex[0] - 1][2];
+			//cout << "Setting vertices for face starting at index " << vertexCount << endl;
+			//cout << "vertex value is " << tempVertices[vertexIndex[0] - 1][0]
+			//<< ", " << tempVertices[vertexIndex[0] - 1][1]<< ", " << tempVertices[vertexIndex[0] - 1][2]<< endl;
+			//1
+			glm::vec4 tempVec = glm::vec4();
+			tempVec = transformMat * glm::vec4(tempVertices[vertexIndex[0] - 1][0], tempVertices[vertexIndex[0] - 1][1],
+				tempVertices[vertexIndex[0] - 1][2] , 1.0f);
 
-			vertices[vertexCount + 1][0] = tempVertices[vertexIndex[1] - 1][0];
-			vertices[vertexCount + 1][1] = tempVertices[vertexIndex[1] - 1][1];
-			vertices[vertexCount + 1][2] = tempVertices[vertexIndex[1] - 1][2];
+			vertices[vertexCount + 0][0] = tempVec.x;
+			vertices[vertexCount + 0][1] = tempVec.y;
+			vertices[vertexCount + 0][2] = tempVec.z;
 
-			vertices[vertexCount + 2][0] = tempVertices[vertexIndex[2] - 1][0];
-			vertices[vertexCount + 2][1] = tempVertices[vertexIndex[2] - 1][1];
-			vertices[vertexCount + 2][2] = tempVertices[vertexIndex[2] - 1][2];
+
+			if(xPlus == xMinus && xMinus == yPlus && yPlus == yMinus &&
+				yMinus == zPlus && zPlus == zMinus){
+				xPlus = tempVec.x;
+				xMinus = tempVec.x;
+				yPlus = tempVec.y;
+				yMinus = tempVec.y;
+				zPlus = tempVec.z;
+				zMinus = tempVec.z;
+			}
+			
+			xPlus = std::max(tempVec.x, xPlus);
+			xMinus = std::min(tempVec.x, xMinus);
+			yPlus = std::max(tempVec.y, yPlus);
+			yMinus = std::min(tempVec.y, yMinus);
+			zPlus = std::max(tempVec.z, zPlus);
+			zMinus = std::min(tempVec.z, zMinus);
+
+
+			//2
+			tempVec = transformMat * glm::vec4(tempVertices[vertexIndex[1] - 1][0], tempVertices[vertexIndex[1] - 1][1],
+				tempVertices[vertexIndex[1] - 1][2] , 1.0f);
+
+			vertices[vertexCount + 1][0] = tempVec.x;
+			vertices[vertexCount + 1][1] = tempVec.y;
+			vertices[vertexCount + 1][2] = tempVec.z;
+
+			xPlus = std::max(tempVec.x, xPlus);
+			xMinus = std::min(tempVec.x, xMinus);
+			yPlus = std::max(tempVec.y, yPlus);
+			yMinus = std::min(tempVec.y, yMinus);
+			zPlus = std::max(tempVec.z, zPlus);
+			zMinus = std::min(tempVec.z, zMinus);
+
+
+			//3
+			tempVec = transformMat * glm::vec4(tempVertices[vertexIndex[2] - 1][0], tempVertices[vertexIndex[2] - 1][1],
+				tempVertices[vertexIndex[2] - 1][2] , 1.0f);
+
+			vertices[vertexCount + 2][0] = tempVec.x;
+			vertices[vertexCount + 2][1] = tempVec.y;
+			vertices[vertexCount + 2][2] = tempVec.z;
+
+			xPlus = std::max(tempVec.x, xPlus);
+			xMinus = std::min(tempVec.x, xMinus);
+			yPlus = std::max(tempVec.y, yPlus);
+			yMinus = std::min(tempVec.y, yMinus);
+			zPlus = std::max(tempVec.z, zPlus);
+			zMinus = std::min(tempVec.z, zMinus);
+
+			
+
+			// vertices[vertexCount + 0][0] = tempVertices[vertexIndex[0] - 1][0];
+			// vertices[vertexCount + 0][1] = tempVertices[vertexIndex[0] - 1][1];
+			// vertices[vertexCount + 0][2] = tempVertices[vertexIndex[0] - 1][2];
+
+			// vertices[vertexCount + 1][0] = tempVertices[vertexIndex[1] - 1][0];
+			// vertices[vertexCount + 1][1] = tempVertices[vertexIndex[1] - 1][1];
+			// vertices[vertexCount + 1][2] = tempVertices[vertexIndex[1] - 1][2];
+
+			// vertices[vertexCount + 2][0] = tempVertices[vertexIndex[2] - 1][0];
+			// vertices[vertexCount + 2][1] = tempVertices[vertexIndex[2] - 1][1];
+			// vertices[vertexCount + 2][2] = tempVertices[vertexIndex[2] - 1][2];
 
 			if(foundVN){
-				cout << "Setting normals for face" << endl;
+				//cout << "Setting normals for face" << endl;
 				//Set normals
 				vertexNormals[vertexCount + 0][0] = tempVertexNormals[normalIndex[0] - 1][0];
 				vertexNormals[vertexCount + 0][1] = tempVertexNormals[normalIndex[0] - 1][1];
@@ -835,14 +889,45 @@ void readObj(const char * fileName){
 				vertexNormals[vertexCount + 2][0] = tempVertexNormals[normalIndex[2] - 1][0];
 				vertexNormals[vertexCount + 2][1] = tempVertexNormals[normalIndex[2] - 1][1];
 				vertexNormals[vertexCount + 2][2] = tempVertexNormals[normalIndex[2] - 1][2];
+			}else{
+				//Calculate normals
+				cout << "Calculating normals" << endl;
+				// get the three vertices that make the faces
+				glm::vec3 p1(vertices[vertexCount+0][0],vertices[vertexCount+0][1],vertices[vertexCount+0][2]);
+				glm::vec3 p2(vertices[vertexCount+1][0],vertices[vertexCount+1][1],vertices[vertexCount+1][2]);
+				glm::vec3 p3(vertices[vertexCount+2][0],vertices[vertexCount+2][1],vertices[vertexCount+2][2]);
+
+				// Calculate the 2 vectors
+				glm::vec3 v1 = p2 - p1;
+				glm::vec3 v2 = p3 - p1;
+				//Cross to get normal
+				glm::vec3 normal = glm::cross(v1, v2);
+
+			  	glm::normalize(normal);
+
+			  	// Store the face's normal for each of the vertices that make up the face.
+
+				vertexNormals[vertexCount+0][0] = normal.x;
+				vertexNormals[vertexCount+0][1] = normal.y;
+				vertexNormals[vertexCount+0][2] = normal.z;
+
+				vertexNormals[vertexCount+1][0] = normal.x;
+				vertexNormals[vertexCount+1][1] = normal.y;
+				vertexNormals[vertexCount+1][2] = normal.z;
+
+				vertexNormals[vertexCount+2][0] = normal.x;
+				vertexNormals[vertexCount+2][1] = normal.y;
+				vertexNormals[vertexCount+2][2] = normal.z;
+
 			}
+
 			
 
 
 			//Find Ka and Kd values of these faces
 			mtlFile = fopen(mtlLibrary, "r");
 			if(mtlFile == NULL){
-				cerr << "Failed to open material file for reading. Using default colors" << endl;
+				cerr << "Couldn't open material file for reading. Using default colors" << endl;
 			}else if(strcmp(material, "empty") == 0){
 				cout << "No material specified, using default" << endl;
 			}else{
@@ -907,7 +992,19 @@ void readObj(const char * fileName){
 
 		}else if( strcmp( lineHeader, "mtllib") == 0 ){
 			fscanf(inputFile, "%s\n", mtlLibrary);
-			char temp[70] = "objFiles/";
+			char temp[70] = "";
+			int length = strlen(fileName);
+			// cout << "filename length = " << length << endl;
+			// cout << "temp is currently " << temp << endl;
+			int slashIndex;
+			for(slashIndex = length - 1; slashIndex >= 0; slashIndex--){
+				if(fileName[slashIndex] == '/'){
+					break;
+				}
+			}
+			strncpy(temp, fileName, slashIndex + 1);
+			cout << "Reading from directory " << temp << endl;
+
 			strcat(temp, mtlLibrary);
 			strcpy(mtlLibrary, temp);
 			cout << "Using material library: " << mtlLibrary << endl;
@@ -926,6 +1023,7 @@ void readObj(const char * fileName){
 	fclose(inputFile);
 	
 	NumVertices = vertexCount;
+	cout << "NumVertices is " << NumVertices << "\n" <<endl;
 }
 
 
@@ -933,8 +1031,9 @@ void readObj(const char * fileName){
 
 void readControl(char * controlFile){
 	FILE * inputFile;
-	char lineHeader[128];
-	char objName[128];
+	char lineHeader[128] = "";
+	char objName[128] = "";
+	bool needToProcessObj = false;
 
 	inputFile = fopen(controlFile, "r");
 	if(inputFile == NULL){
@@ -950,23 +1049,49 @@ void readControl(char * controlFile){
 		}
 
 		if( strcmp( lineHeader, "obj" ) == 0 ){
+			if(needToProcessObj){
+				readObj(objName);
+				transformMat = glm::mat4();//reset tranform matrix
+			}
 			fscanf(inputFile, "%s\n", objName );
-			readObj(objName);
-			objCount++;
+			
+			needToProcessObj = true;
+			
 		}else if(strcmp( lineHeader, "t" ) == 0){//translate
 			glm::vec3 trans;
 			fscanf(inputFile, "%f %f %f\n", &trans.x, &trans.y, &trans.z);
-			model = glm::translate(model, trans);
+			transformMat = glm::translate(transformMat, trans);
 
 		}else if(strcmp( lineHeader, "s" ) == 0){//Scale
 			glm::vec3 scail;
 			fscanf(inputFile, "%f %f %f\n", &scail.x, &scail.y, &scail.z);
-			model = glm::scale(model, scail);
+			transformMat = glm::scale(transformMat, scail);
 
 		}else if(strcmp( lineHeader, "rx" ) == 0){//Rotate
-
+			float angle;
+			fscanf(inputFile, "%f\n", &angle);
+			glm::vec3 axis(1.0f, 0.0f, 0.0f);
+			transformMat = glm::rotate(transformMat, glm::radians(angle), axis);
+		}else if(strcmp( lineHeader, "ry" ) == 0){//Rotate
+			float angle;
+			fscanf(inputFile, "%f\n", &angle);
+			glm::vec3 axis(0.0f, 1.0f, 0.0f);
+			transformMat = glm::rotate(transformMat, glm::radians(angle), axis);
+		}else if(strcmp( lineHeader, "rz" ) == 0){//Rotate
+			float angle;
+			fscanf(inputFile, "%f\n", &angle);
+			glm::vec3 axis(0.0f, 0.0f, 1.0f);
+			transformMat = glm::rotate(transformMat, glm::radians(angle), axis);
 		}
 	}
+	if(needToProcessObj){
+		readObj(objName);
+	}else{
+		cout << "control file contains no obj files" << endl;
+	}
+
+	fclose(inputFile);
+	return;
 }
 
 
@@ -997,7 +1122,8 @@ int main(int argc, char* argv[])
 
 	readControl(argv[2]);
 
-	cout << "yPlus:" << yPlus << " yMinus:" << yMinus << " xMinus:" << xMinus << " xPlus:" << xPlus << " zPlus:" << zPlus << endl;
+	// cout << "yPlus:" << yPlus << " yMinus:" << yMinus << " xMinus:" << xMinus << " xPlus:"
+	//  << xPlus << " zPlus:" << zPlus << " zMinus:" << zMinus << endl;
 	float largestDim = std::max(std::max(xPlus - xMinus, yPlus - yMinus), zPlus - zMinus);
 	float camX = 3 * largestDim;
 	float camY = 3 * largestDim;
@@ -1008,11 +1134,12 @@ int main(int argc, char* argv[])
 	float focX = (xPlus - std::fabs(xMinus))/2.0;
 	float focY = (yPlus - std::fabs(yMinus))/2.0;
 	float focZ = (zPlus - std::fabs(zMinus))/2.0;
-	focalPoint = defaultFP = glm::vec3(0, 0, focZ);
+	focalPoint = defaultFP = glm::vec3(focX, focY, focZ);
 	cout << "focalPoint = " << focX << ", " << focY << ", " << focZ << endl;
+
 	// Set light based on camera position and focal
 	//light = glm::normalize(glm::vec3((camX * 3.0/2.0) - focX, (camY * 3.0/2.0) - focY, (camZ * 3.0/2.0) - focZ));
-	light = glm::normalize(glm::vec3(0, .2, .1));
+	light = glm::normalize(glm::vec3(-.5, .5, .7));
 
 
 	//GLUT stuff starts
