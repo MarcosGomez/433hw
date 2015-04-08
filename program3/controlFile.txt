@@ -1,0 +1,9 @@
+obj objFiles/dodecahedron.obj 
+obj objFiles/sphere.obj 
+t 2 0 0
+obj objFiles/sphere.obj 
+t 0 0 2
+obj objFiles/sphere.obj 
+t 0 2 0
+obj objFiles/axis.obj 
+s 4 4 4

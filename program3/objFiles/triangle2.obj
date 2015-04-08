@@ -1,0 +1,11 @@
+mtllib master.mtl
+
+# 3 vertices
+v 1.0 0.0 0.0
+v 0.0 1.0 0.0
+v 0.0 0.0 1.0
+
+vn 1.0 -1.0 1.0
+
+usemtl red
+f 1 2 3

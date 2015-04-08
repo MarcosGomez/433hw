@@ -1,0 +1,24 @@
+obj objFiles/bunny.obj 
+rx 90
+ry 180
+
+obj objFiles/bunny.obj 
+rx 90
+ry 180
+t 5 0 0
+
+obj objFiles/bunny.obj 
+rx 90
+ry 180
+t 0 5 0
+
+obj objFiles/bunny.obj 
+rx 90
+ry 180
+t 0 0 5
+
+light local ambient 1. 1. 1. color 1. 1. 1. position 5. 5. 0. constAtt 0.2 linearAtt 0.2 quadAtt .002
+
+light directional ambient 0.2 0.2 0.2 color 1. 0. 0. position 0. 1. 0.
+
+view  camera 3. 3. 2.  focal 0. 0. 0.  viewup 0. 0. 1.

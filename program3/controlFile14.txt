@@ -1,0 +1,21 @@
+obj objFiles/sphere2.obj
+obj objFiles/sphere2.obj
+t 2. 0. 0.
+obj objFiles/sphere2.obj
+t 4. 0. 0.
+obj objFiles/sphere2.obj
+t 0. 2. 0.
+obj objFiles/sphere2.obj
+t 2. 2. 0.
+obj objFiles/sphere2.obj
+t 4. 2. 0.
+obj objFiles/sphere2.obj
+t 0. 4. 0.
+obj objFiles/sphere2.obj
+t 2. 4. 0.
+obj objFiles/sphere2.obj
+t 4. 4. 0.
+
+light local ambient 1. 1. 1. color 1. 1. 1. position 5. 5. 0. constAtt 0.2 linearAtt 0.2 quadAtt .002
+
+view  camera 6. 6. 4.  focal 0. 0. 0.  viewup 0. 0. 1.

@@ -1,0 +1,6 @@
+obj stanfordModels/armadillo.obj
+rx 90.
+
+light directional ambient 1.0 1.0 1.0 color 1. 1. 1. position 0. 1. 0.
+
+view  camera 3. 3. 2.  focal 0. 0. 0.  viewup 0. 0. 1.

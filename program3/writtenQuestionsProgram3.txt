@@ -1,0 +1,32 @@
+Marcos Gomez
+4/10/15
+program 3
+
+
+1. [3 points] Describe each of the terms of the classic lighting model, given by the equation: 
+I*Ka + I*Kd ( N dot L ) + I*Ks * (N dot H)^n
+Ka is the ambient light, which represents the light that is scattered around the room and hits all the objects uniformly.
+It has no specific direction and is constant throughout the scene. 
+Kd is the diffuse light, which represents how the light source lights up the surface based on what angle the light hits the surface.
+The light is scattered by the surface equally in all directions.
+Ks is the specular component and it simulates how light can reflect off objects and creates highlights depending on the angle of your eye and the light source off the object.
+It simulates how much the surface acts like a mirror.
+N is the normal vector of the surface. 
+L is the vector of the direction of the surface to the light source. 
+H is the halfway vector between the eye position and the light position from the surface.
+I is the intensity of the light. 
+n is a power which models the specular reflected light for each material.
+
+2. [ 3 points] Describe the meaning of the three terms below, focusing on the application of a lighting model and the surface normal.
+a. Flat shading - Is one color per face and is the most basic shading. It gives low-polygon models a faceted look.
+b. Gouraud shading - Where the colors are blended by bilinear interpolation across a face. It simulates the differing effects of light and colour across the surface of an object.
+c. Blinn-Phong shading - It is a local illumination model where there is an ambient, diffuse and specular terms that somewhat realistically simulate how light reacts with a surface.
+
+
+3. [4 points] In the OpenGL 4 Shading Language Cookbook, Second Edition (there is a link on Documentation web page for the class) in chapter 3 there is a description of how to simulate a fog effect.
+a. Provide a summary of how the effect is implemented.
+b. Could this technique be added to a fragment shader that implements the Blinn- Phong lighting model? Why or why not?
+
+a) First you have to compute the fog factor, which is based on the distance of the vertex from the camera. Then the chosen fog color is mixed with the original color of the vertex based on fog factor. The farther away the vertex, the more prominent the fog color is compared to the original color.
+
+b) This technique could be added to a fragment shader with the Blinn-Phong lighting model because all you need to do is mix the fog color with the final color produced based on the Blinn-Phong lighting model to get the desired fog effect.
