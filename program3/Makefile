@@ -1,7 +1,7 @@
 #
 #	Makefile for OpenGL program from Chapter 1 in Red Book
 #
-#IS_LINUX = 1
+IS_LINUX = 1
 
 CC = g++
 CFLAGS = -D_DEBUG

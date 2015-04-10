@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////////////
 //  assignment 3 for CSC 433
 //////////////////////////////////////////////////////////
-//#define IS_LINUX //Also change all comments for other files, Makefile, and shaders
+#define IS_LINUX //Also change all comments for other files, Makefile, and shaders
 
 #include <iostream>
 #include <stdio.h>
@@ -456,7 +456,7 @@ void init ( void )
 	classicProgram = LoadShaders( classicShaders );
 
 
-	glLineWidth( 5.f );	// thicker lines for wireframe
+	glLineWidth( 1.f );	// thicker lines for wireframe
 	glUseProgram( classicProgram );
 	setFragUniforms();
 	glClearColor(0.0f, 0.2f, 0.4f, 1.0f);
