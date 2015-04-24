@@ -1,0 +1,8 @@
+obj objFiles/cube_with_texture.obj
+
+light directional ambient .1 .1 .1 color 1. 1. 1. position 0. 1. 0. 
+
+light directional ambient .1 .1 .1 color 1. 1. 1. position 0. 0. 1. 
+
+
+view  camera 0.75 1.5 1. focal 0. 0. 0.  viewup 0. 0. 1.

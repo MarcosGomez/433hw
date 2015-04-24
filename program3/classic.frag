@@ -1,9 +1,9 @@
 // Fragment shader for multiple lights.
 
 //OSX
-//#version 410 core
+#version 410 core
 //Linux
-#version 430 core
+//#version 430 core
 
 struct LightProperties {
     bool isEnabled;

@@ -1,0 +1,8 @@
+obj objFiles/teapot3.obj
+rx 90.
+
+light directional ambient .2 .2 .2 color .9 .9 .9 position 0. 1. 0. 
+
+light directional ambient .2 .2 .2 color .5 .5 .5 position 0. 0. 1.
+
+view  camera 100. 100. 70.  focal 0. 0. 0.  viewup 0. 0. 1.

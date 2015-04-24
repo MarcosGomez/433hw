@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////////////
 //  assignment 3 for CSC 433
 //////////////////////////////////////////////////////////
-#define IS_LINUX //Also change all comments for other files, Makefile, and shaders
+//#define IS_LINUX //Also change all comments for other files, Makefile, and shaders
 
 #include <iostream>
 #include <stdio.h>

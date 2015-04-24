@@ -1,0 +1,10 @@
+obj objFiles/teapot3.obj
+rx 90.
+
+light directional ambient .1 .1 .1 color .9 .9 .9 position 0. 1. 0. 
+
+light local ambient .2 .2 0. color 1. 1. 0. position 40. 40. -100. constAtt 0.02 linearAtt 0.02 quadAtt .0002
+
+light spot ambient .2 0. 0. color 1. 0. 0.    position -10. 10. -100. constAtt 0.02 linearAtt 0.02 quadAtt 0.0002 coneDirection 0. -1. -1. spotCosCutoff .867 spotExponent 20.
+
+view  camera 100. 100. 70.  focal 0. 0. 0.  viewup 0. 0. 1.

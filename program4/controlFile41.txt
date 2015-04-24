@@ -1,0 +1,9 @@
+obj objFiles/earth.obj
+rx 90 rz 270
+
+
+light directional ambient 1. 1. 1. color 1. 1. 1. position 0. 1. 0. 
+
+light directional ambient .1 .1 .1 color .7 .7 .7 position 0. 0. 1. 
+
+view  camera 2. 2. 1. focal 0. 0. 0.  viewup 0. 0. 1.

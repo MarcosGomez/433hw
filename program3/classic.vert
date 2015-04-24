@@ -2,9 +2,9 @@
 // done in the fragment shader.
 
 //OSX
-//#version 410 core
+#version 410 core
 //Linux
-#version 430 core
+//#version 430 core
 
 uniform mat4 MVPMatrix;	// full model-view-projection matrix
 uniform mat4 MVMatrix;	// model and view matrix
