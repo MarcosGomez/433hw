@@ -13,8 +13,8 @@ rz 70 ry -13
 
 light spot ambient .3 .1 .1 color 1. 0.3 0.3    position 0. 0. 1. constAtt 0.02 linearAtt 0.02 quadAtt 0.0002 coneDirection 0. 0. -1. spotCosCutoff .867 spotExponent 20.
 
-light directional ambient .2 .2 .2 color .6 .6 .6 position 0. 0. -1. 
+light directional ambient .2 .2 .2 color .6 .6 .6 position 1. -1. 0. 
 
-light local ambient .2 .2 .2 color 1. 1. 1. position 20. 0. 55. constAtt 0.015 linearAtt 0.015 quadAtt .00015
+light local ambient .2 .2 .2 color 0.2 0.2 1. position 30. 0. 55. constAtt 0.015 linearAtt 0.015 quadAtt .00015
 
-view  camera 30. 30. 15. focal 0. 0. 0.  viewup 0. 0. 1.
+view  camera 28. 28. 14. focal 0. 0. 0.  viewup 0. 0. 1.

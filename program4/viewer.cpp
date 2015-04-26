@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////////////
 //  assignment 4 for CSC 433
 //////////////////////////////////////////////////////////
-//#define IS_LINUX //Also change all comments for other files, Makefile, and shaders
+#define IS_LINUX //Also change all comments for other files, Makefile, and shaders
 
 #include <iostream>
 #include <stdio.h>
@@ -22,7 +22,7 @@ using namespace std;
 #include "glm/glm/glm.hpp"
 #include "glm/glm/gtc/matrix_transform.hpp"
 #include "glm/glm/gtc/type_ptr.hpp"
-#include "soil/SOIL.h"
+#include "./linuxSOIL/SOIL.h"
 
 //Can be changed at will
 #define SHOW_DISPLAY_INFO 0

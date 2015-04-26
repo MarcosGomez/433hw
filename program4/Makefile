@@ -1,7 +1,7 @@
 #
 #	Makefile for OpenGL program from Chapter 1 in Red Book
 #
-#IS_LINUX = 1
+IS_LINUX = 1
 
 CC = g++
 CFLAGS = -D_DEBUG
@@ -12,7 +12,7 @@ CPPFLAGS = -g
 
 
 ifdef IS_LINUX
-LIBS = -lGL -lGLU -lGLEW -lglut -lSOIL
+LIBS = -lGL -lGLU -lGLEW -lglut -L./linuxSOIL -lSOIL
 else
 LIBS = -framework OpenGL -framework GLUT -lglew -lSOIL -framework CoreFoundation
 endif

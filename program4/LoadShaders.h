@@ -4,7 +4,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-//#define IS_LINUX //If commented then assumes OSX
+#define IS_LINUX //If commented then assumes OSX
 
 #ifndef __LOAD_SHADERS_H__
 #define __LOAD_SHADERS_H__
